@@ -5,10 +5,10 @@ pub fn build(b: *Builder) void {
     const mode = b.standardReleaseOptions();
 
     const exe = b.addExecutable("firmware.elf", "main.zig");
-    exe.setTarget(builtin.Arch { .thumb = .v7m }, builtin.Os.freestanding, builtin.Abi.none);
+    exe.setTarget(builtin.Arch{ .thumb = .v7m }, builtin.Os.freestanding, builtin.Abi.none);
 
     const main_o = b.addObject("startup", "startup.zig");
-    main_o.setTarget(builtin.Arch { .thumb = .v7m }, builtin.Os.freestanding, builtin.Abi.none);
+    main_o.setTarget(builtin.Arch{ .thumb = .v7m }, builtin.Os.freestanding, builtin.Abi.none);
     exe.addObject(main_o);
 
     exe.setBuildMode(mode);
