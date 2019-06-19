@@ -4,7 +4,7 @@ const builtin = @import("builtin");
 pub fn build(b: *Builder) void {
     const mode = b.standardReleaseOptions();
 
-    const exe = b.addExecutable("firmware", "main.zig");
+    const exe = b.addExecutable("firmware.elf", "main.zig");
     exe.setTarget(builtin.Arch { .thumb = .v7m }, builtin.Os.freestanding, builtin.Abi.none);
 
     const main_o = b.addObject("startup", "startup.zig");
