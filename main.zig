@@ -1,13 +1,17 @@
-var x: u32 = 1;
+usingnamespace @import("stm32f10.zig");
 
 export fn main() void {
-    while (x > 0) {
-        x += 1;
-    }
-}
+    SystemInit();
+    RCC.*.APB2ENR |= RCC_APB2Periph_GPIOC; // enable GPIOC clk
+    GPIOC.*.CRH &= ~u32(0b1111 << 20); // PC13
+    GPIOC.*.CRH |= u32(0b0010 << 20); // Out PP, 2MHz
 
-export fn HardFault_Handler() void {
     while (true) {
-        x += 1;
+        GPIOC.*.ODR ^= GPIO_PIN_13; // toggle
+        var i: u32 = 0;
+        while (i < 1000000) {
+            asm volatile ("nop");
+            i += 1;
+        }
     }
 }
