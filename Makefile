@@ -5,7 +5,7 @@ MAKEFLAGS += --no-builtin-variables
 BUILD_FLAGS = --release-small -target thumbv7m-freestanding-none
 LINKER_SCRIPT = arm_cm3.ld
 LD_FLAGS = --gc-sections -nostdlib
-OBJS = startup.o main.o stm32f10.o core_cm3.o
+OBJS = startup.o main.o
 PROG = firmware
 
 %.o: %.zig

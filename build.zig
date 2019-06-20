@@ -13,6 +13,7 @@ pub fn build(b: *Builder) void {
 
     exe.setBuildMode(mode);
     exe.setLinkerScriptPath("arm_cm3.ld");
+    exe.setOutputDir(".");
 
     b.default_step.dependOn(&exe.step);
     b.installArtifact(exe);
