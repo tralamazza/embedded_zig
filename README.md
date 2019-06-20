@@ -1,6 +1,6 @@
 # embedded_zig
 
-A "minimal" ARM cortex-M firmware in Zig.
+A "minimal" ARM cortex-M firmware in Zig running on a STM32F103. It blinks.
 
 ## building
 
@@ -24,10 +24,10 @@ Bonus: you can type `make` inside gdb and `load` it again.
 
 ## issues
 
-You can try uncommenting the line below (in the `Makefile`) to use the lld (don't forget to comment out ld):
+If you have any linking issues uncomment the line below (in the `Makefile`) to use GNU ld:
 
-        zig build-exe ${BUILD_FLAGS} $(OBJS:%=--object %) --name $@.elf --linker-script ${LINKER_SCRIPT}
-    #   arm-none-eabi-ld ${OBJS} -o $@.elf -T ${LINKER_SCRIPT} -Map $@.map --gc-sections
+    #    zig build-exe ${BUILD_FLAGS} $(OBJS:%=--object %) --name $@.elf --linker-script ${LINKER_SCRIPT}
+       arm-none-eabi-ld ${OBJS} -o $@.elf -T ${LINKER_SCRIPT} -Map $@.map --gc-sections
 
 ## raq (rarely asked questions)
 
@@ -38,3 +38,7 @@ A: lalalala
 b) How do I flash this?
 
 A: see [running on a bluepill](#running-on-a-bluepill)
+
+c) Why didn't you use `@cImport()`?
+
+A: yes
