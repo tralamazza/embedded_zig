@@ -2,8 +2,8 @@ OUTPUT_FORMAT ("elf32-littlearm", "elf32-bigarm", "elf32-littlearm")
 
 MEMORY
 {
-    FLASH (rx)    : ORIGIN = 0x08000000, LENGTH = 0x10000 /* 64K */
-    RAM (rxw)     : ORIGIN = 0x20000000, LENGTH = 0x05000 /* 20K */
+    FLASH (rx)    : ORIGIN = 0x08000000, LENGTH = 64K
+    RAM (rxw)     : ORIGIN = 0x20000000, LENGTH = 20K
 }
 
 STACK_SIZE = 256;
@@ -13,11 +13,11 @@ ENTRY(Reset_Handler)
 
 PROVIDE(__stack_top = ALIGN(ORIGIN(RAM) + LENGTH(RAM) - 8 ,8));
 
-PROVIDE(NMI_Handler = Dummy_Handler);
-PROVIDE(HardFault_Handler = Dummy_Handler);
-PROVIDE(MemManage_Handler = Dummy_Handler);
-PROVIDE(BusFault_Handler = Dummy_Handler);
-PROVIDE(UsageFault_Handler = Dummy_Handler);
+PROVIDE(NMI_Handler = BusyDummy_Handler);
+PROVIDE(HardFault_Handler = BusyDummy_Handler);
+PROVIDE(MemManage_Handler = BusyDummy_Handler);
+PROVIDE(BusFault_Handler = BusyDummy_Handler);
+PROVIDE(UsageFault_Handler = BusyDummy_Handler);
 PROVIDE(SVC_Handler = Dummy_Handler);
 PROVIDE(DebugMon_Handler = Dummy_Handler);
 PROVIDE(PendSV_Handler = Dummy_Handler);
@@ -35,25 +35,25 @@ SECTIONS {
     __exidx_start = .;
     .ARM.exidx : {
         *(.ARM.exidx*)
+        . = ALIGN(4);
     } > FLASH
     __exidx_end = .;
 
     __text_end = .;
-    . = ALIGN(4);
 
     .data : AT(__text_end) {
         __data_start = .;
         *(SORT_BY_ALIGNMENT(.data*))
         . = ALIGN(4);
     } > RAM
-    __data_size_ptr = SIZEOF(.data);
+    __data_size = SIZEOF(.data);
 
     .bss (NOLOAD) : {
         __bss_start = .;
         *(SORT_BY_ALIGNMENT(.bss*) SORT_BY_ALIGNMENT(COMMON*))
         . = ALIGN(4);
     } > RAM
-    __bss_size_ptr = SIZEOF(.bss);
+    __bss_size = SIZEOF(.bss);
 
     /* DWARF 4 */
     .debug_abbrev 0 : { *(.debug_abbrev) }
