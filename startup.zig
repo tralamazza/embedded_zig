@@ -26,8 +26,7 @@ export fn BusyDummy_Handler() void {
     while (true) {}
 }
 
-export fn Dummy_Handler() void {
-}
+export fn Dummy_Handler() void {}
 
 extern fn NMI_Handler() void;
 extern fn HardFault_Handler() void;
