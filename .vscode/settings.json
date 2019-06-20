@@ -1,0 +1,6 @@
+{
+    "zig.buildArgs": [
+        "--release-small",
+        "-target thumbv7m-freestanding-none"
+    ]
+}
