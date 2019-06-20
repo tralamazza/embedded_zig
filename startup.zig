@@ -1,31 +1,32 @@
 const builtin = @import("builtin");
-const mem = @import("std").mem;
 
 extern fn main() void;
-extern var __text_end: usize;
-extern var __data_start: usize;
-extern var __data_size_ptr: *usize;
-extern var __bss_start: usize;
-extern var __bss_size_ptr: *usize;
-extern var __stack_top: *usize;
+extern var __text_end: u32;
+extern var __data_start: u32;
+extern var __data_size: u32;
+extern var __bss_start: u32;
+extern var __bss_size: u32;
+extern var __stack_top: u32;
 
 export fn Reset_Handler() void {
-    // TODO maybe reset VTOR?
     // copy data from flash to RAM
-    var data = @ptrCast([*]u8, &__data_start);
-    var text = @ptrCast([*]u8, &__text_end);
-    const size_data = __data_size_ptr.*;
-    for (text[0..size_data]) |b, i| data[i] = b;
-    // zero bss
-    var bss = @ptrCast([*]u8, &__bss_start);
-    const size_bss = __bss_size_ptr.*;
-    for (bss[0..size_bss]) |*b| b.* = 0;
+    const data_size = @ptrToInt(&__data_size);
+    const data = @ptrCast([*]u8, &__data_start);
+    const text_end = @ptrCast([*]u8, &__text_end);
+    for (text_end[0..data_size]) |b, i| data[i] = b;
+    // clear the bss
+    const bss_size = @ptrToInt(&__bss_size);
+    const bss = @ptrCast([*]u8, &__bss_start);
+    for (bss[0..bss_size]) |*b| b.* = 0;
     // start
     main();
 }
 
-export fn Dummy_Handler() void {
+export fn BusyDummy_Handler() void {
     while (true) {}
+}
+
+export fn Dummy_Handler() void {
 }
 
 extern fn NMI_Handler() void;
