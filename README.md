@@ -8,6 +8,20 @@ Get [GNU Arm Embedded Toolchain](https://developer.arm.com/tools-and-software/op
 
     make
 
+## running on a [bluepill](http://wiki.stm32duino.com/index.php?title=Blue_Pill)
+
+Run OpenOCD on a terminal:
+
+    openocd -f /usr/share/openocd/scripts/interface/stlink-v2.cfg -f /usr/share/openocd/scripts/target/stm32f1x.cfg
+
+Open your favorite GDB:
+
+    arm-none-eabi-gdb firmware.elf -ex 'target extended-remote :3333'
+    load
+    r
+
+Bonus: you can type `make` inside gdb and `load` it again.
+
 ## issues
 
 You can try uncommenting the line below (in the `Makefile`) to use the lld (don't forget to comment out ld):
@@ -23,4 +37,4 @@ A: lalalala
 
 b) How do I flash this?
 
-A: yes
+A: see [running on a bluepill](#running-on-a-bluepill)
